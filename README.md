@@ -24,7 +24,7 @@
     apt update && apt upgrade -y
     ```
   - ```
-    apt install -y python git
+    apt install -y python3 git
     ```
   - ```
     git clone https://github.com/A-KTO-Tbl/Blum
