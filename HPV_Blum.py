@@ -36,9 +36,11 @@ class HPV_Blum:
     
     [5] - `Получение кол-ва доступных игр и запуск их прохождения`
     
-    [6] - `Ожидание от 8 до 9 часов`
+    [6] - `Выполнение всех доступных заданий`
     
-    [7] - `Повторение действий через 8-9 часов`
+    [7] - `Ожидание от 8 до 9 часов`
+    
+    [8] - `Повторение действий через 8-9 часов`
     '''
 
 
@@ -212,26 +214,77 @@ class HPV_Blum:
 
 
 
+    def Get_Tasks(self) -> list:
+        '''Список заданий'''
+
+        URL = 'https://game-domain.blum.codes/api/v1/tasks'
+        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'X-Requested-With': 'org.telegram.plus', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7'}
+
+        try:
+            return get(URL, headers=Headers, proxies=self.Proxy).json()
+        except:
+            return []
+
+
+
+    def Start_Tasks(self, ID: str) -> bool:
+        '''Запуск задания'''
+
+        URL = f'https://game-domain.blum.codes/api/v1/tasks/{ID}/start'
+        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'X-Requested-With': 'org.telegram.plus', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7'}
+
+        try:
+            return True if post(URL, headers=Headers, proxies=self.Proxy).json()['STARTED'] else False
+        except:
+            return False
+
+
+
+    def Claim_Tasks(self, ID: str) -> dict:
+        '''Получение награды за выполненное задание'''
+
+        URL = f'https://game-domain.blum.codes/api/v1/tasks/{ID}/claim'
+        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'X-Requested-With': 'org.telegram.plus', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7'}
+
+        try:
+            HPV = post(URL, headers=Headers, proxies=self.Proxy).json()
+
+            Status = HPV['status'] # Статус задания
+            Reward = HPV['reward'] # Награда
+
+            if Status == 'FINISHED':
+                return {'Status': True, 'Reward': Reward}
+            else:
+                return {'Status': False}
+        except:
+            return {'Status': False}
+
+
+
     def Run(self) -> None:
         '''Активация бота'''
 
         while True:
             try:
                 if self.Token: # Если аутентификация успешна
+                    self.Logging('Success', self.Name, '💰', f'Текущий баланс: {self.Get_Info()["Balance"]}')
+
 
                     if self.Daily_Reward(): # Получение ежедневной награды
                         self.Logging('Success', self.Name, '🟢', 'Ежедневная награда получена!')
                         sleep(randint(33, 103)) # Промежуточное ожидание
 
+
                     self.Claim() # Сбор монет
                     sleep(randint(33, 103)) # Промежуточное ожидание
                     self.Start_Farm() # Запуск фарма монет
+                    sleep(randint(33, 103)) # Промежуточное ожидание
+
 
                     if self.Referal_Claim(): # Сбор монет за рефералов
                         self.Logging('Success', self.Name, '🟢', 'Монеты за рефералов собраны!')
                         sleep(randint(33, 103)) # Промежуточное ожидание
 
-                    self.Logging('Success', self.Name, '💰', f'Текущий баланс: {self.Get_Info()["Balance"]}')
 
                     # Получение кол-ва доступных игр и запуск их прохождения
                     Get_plays = self.Get_Info()['Plays'] 
@@ -243,9 +296,31 @@ class HPV_Blum:
 
                         self.Logging('Success', self.Name, '💰', f'Баланс после игр: {self.Get_Info()["Balance"]}')
 
+
+
+                    # Выполнение всех доступных заданий
+                    Tasks = self.Get_Tasks() # Список заданий
+                    for Task in Tasks:
+
+                        if Task['status'] == 'NOT_STARTED': # Если задание ещё не начато
+                            if self.Start_Tasks(Task['id']):
+                                sleep(randint(33, 103)) # Промежуточное ожидание
+                                Claim_Tasks = self.Claim_Tasks(Task['id'])
+                                if Claim_Tasks['Status']:
+                                    self.Logging('Success', self.Name, '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
+                                    sleep(randint(33, 103)) # Промежуточное ожидание
+
+                        elif Task['status'] == 'READY_FOR_CLAIM': # Если задание уже начато
+                            Claim_Tasks = self.Claim_Tasks(Task['id'])
+                            if Claim_Tasks['Status']:
+                                self.Logging('Success', self.Name, '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
+                                sleep(randint(33, 103)) # Промежуточное ожидание
+
+
                     Waiting = randint(29_000, 32_500) # Значение времени в секундах для ожидания
                     Waiting_STR = (datetime.now() + timedelta(seconds=Waiting)).strftime('%Y-%m-%d %H:%M:%S') # Значение времени в читаемом виде
 
+                    self.Logging('Success', self.Name, '💰', f'Текущий баланс: {self.Get_Info()["Balance"]}')
                     self.Logging('Warning', self.Name, '⏳', f'Следующий сбор: {Waiting_STR}!')
 
                     sleep(Waiting) # Ожидание от 8 до 9 часов
@@ -280,11 +355,14 @@ if __name__ == '__main__':
         print(Time + DIVIDER + '🌐' + DIVIDER + Text)
         sleep(5)
 
-    for Account, URL in HPV_Get_Accounts().items():
-        if Proxy:
-            Proxy = cycle(Proxy)
-            Thread(target=Start_Thread, args=(Account, URL, next(Proxy),)).start()
-        else:
-            Thread(target=Start_Thread, args=(Account, URL,)).start()
+    try:
+        for Account, URL in HPV_Get_Accounts().items():
+            if Proxy:
+                Proxy = cycle(Proxy)
+                Thread(target=Start_Thread, args=(Account, URL, next(Proxy),)).start()
+            else:
+                Thread(target=Start_Thread, args=(Account, URL,)).start()
+    except:
+        print(Fore.RED + '\n\tОшибка чтения `HPV_Account.json`, ссылки указаны некорректно!')
 
 
