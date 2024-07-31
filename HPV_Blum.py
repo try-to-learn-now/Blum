@@ -115,7 +115,7 @@ class HPV_Blum:
         '''Получение информации о балансе и наличии доступных игр'''
 
         URL = 'https://game-domain.blum.codes/api/v1/user/balance'
-        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'user-agent': self.UA, 'sec-ch-ua-platform': 'Android', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-encoding': 'gzip, deflate, br', 'accept-language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
             HPV = get(URL, headers=Headers, proxies=self.Proxy).json()
@@ -133,15 +133,10 @@ class HPV_Blum:
         '''Получение ежедневной награды'''
 
         URL = 'https://game-domain.blum.codes/api/v1/daily-reward?offset=-300'
-        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'user-agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-encoding': 'gzip, deflate, br', 'accept-language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
-            HPV = post(URL, headers=Headers, proxies=self.Proxy)
-
-            if HPV.text == 'OK':
-                return True
-            else:
-                return False
+            return True if post(URL, headers=Headers, proxies=self.Proxy).text == 'OK' else False
         except:
             return False
 
@@ -151,7 +146,7 @@ class HPV_Blum:
         '''Сбор монет'''
 
         URL = 'https://game-domain.blum.codes/api/v1/farming/claim'
-        Headers = {'Host': 'game-domain.blum.codes', 'Content-Length': '0', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
             post(URL, headers=Headers, proxies=self.Proxy).json()['availableBalance']
@@ -165,16 +160,11 @@ class HPV_Blum:
         '''Запуск фарма монет'''
 
         URL = 'https://game-domain.blum.codes/api/v1/farming/start'
-        Headers = {'Host': 'game-domain.blum.codes', 'Content-Length': '0', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
-            HPV = post(URL, headers=Headers, proxies=self.Proxy)
-
-            try:
-                HPV.json()['startTime']
-                self.Logging('Success', self.Name, '🟢', 'Фарм монет запущен!')
-            except:
-                self.Logging('Warning', self.Name, '🟡', 'Фарм монет уже запущен!')
+            post(URL, headers=Headers, proxies=self.Proxy).json()['startTime']
+            self.Logging('Success', self.Name, '🟢', 'Фарм монет запущен!')
         except:
             self.Logging('Error', self.Name, '🔴', 'Фарм монет не запущен!')
 
@@ -184,7 +174,7 @@ class HPV_Blum:
         '''Сбор монет за рефералов'''
 
         URL = 'https://gateway.blum.codes/v1/friends/claim'
-        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
             post(URL, headers=Headers, proxies=self.Proxy).json()['claimBalance']
@@ -199,8 +189,8 @@ class HPV_Blum:
 
         URL_1 = 'https://game-domain.blum.codes/api/v1/game/play'
         URL_2 = 'https://game-domain.blum.codes/api/v1/game/claim'
-        Headers_1 = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
-        Headers_2 = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers_1 = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers_2 = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
             GID = post(URL_1, headers=Headers_1, proxies=self.Proxy).json()['gameId'] # Запуск и получение ID игры
@@ -218,7 +208,7 @@ class HPV_Blum:
         '''Список заданий'''
 
         URL = 'https://game-domain.blum.codes/api/v1/tasks'
-        Headers = {'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua-mobile': '?1', 'Authorization': f'Bearer {self.Token}', 'User-Agent': self.UA, 'sec-ch-ua-platform': '"Android"', 'Origin': 'https://telegram.blum.codes', 'X-Requested-With': 'org.telegram.plus', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'ru,ru-RU;q=0.9,en-US;q=0.8,en;q=0.7'}
+        Headers = {'User-Agent': self.UA, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"', 'sec-ch-ua-mobile': '?1', 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': '"Android"', 'origin': 'https://telegram.blum.codes', 'x-requested-with': 'org.telegram.plus', 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7'}
 
         try:
             return get(URL, headers=Headers, proxies=self.Proxy).json()
@@ -301,20 +291,21 @@ class HPV_Blum:
                     # Выполнение всех доступных заданий
                     Tasks = self.Get_Tasks() # Список заданий
                     for Task in Tasks:
+                        for _Task in Task:
 
-                        if Task['status'] == 'NOT_STARTED': # Если задание ещё не начато
-                            if self.Start_Tasks(Task['id']):
-                                sleep(randint(33, 103)) # Промежуточное ожидание
-                                Claim_Tasks = self.Claim_Tasks(Task['id'])
+                            if _Task['status'] == 'NOT_STARTED': # Если задание ещё не начато
+                                if self.Start_Tasks(_Task['id']):
+                                    sleep(randint(33, 103)) # Промежуточное ожидание
+                                    Claim_Tasks = self.Claim_Tasks(_Task['id'])
+                                    if Claim_Tasks['Status']:
+                                        self.Logging('Success', self.Name, '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
+                                        sleep(randint(33, 103)) # Промежуточное ожидание
+
+                            elif _Task['status'] == 'READY_FOR_CLAIM': # Если задание уже начато
+                                Claim_Tasks = self.Claim_Tasks(_Task['id'])
                                 if Claim_Tasks['Status']:
                                     self.Logging('Success', self.Name, '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
                                     sleep(randint(33, 103)) # Промежуточное ожидание
-
-                        elif Task['status'] == 'READY_FOR_CLAIM': # Если задание уже начато
-                            Claim_Tasks = self.Claim_Tasks(Task['id'])
-                            if Claim_Tasks['Status']:
-                                self.Logging('Success', self.Name, '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
-                                sleep(randint(33, 103)) # Промежуточное ожидание
 
 
                     Waiting = randint(29_000, 32_500) # Значение времени в секундах для ожидания
