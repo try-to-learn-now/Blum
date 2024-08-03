@@ -291,7 +291,7 @@ class HPV_Blum:
                     # Выполнение всех доступных заданий
                     Tasks = self.Get_Tasks() # Список заданий
                     for Task in Tasks:
-                        for _Task in Task:
+                        for _Task in Task['tasks']:
 
                             if _Task['status'] == 'NOT_STARTED': # Если задание ещё не начато
                                 if self.Start_Tasks(_Task['id']):
