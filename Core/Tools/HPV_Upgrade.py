@@ -8,19 +8,31 @@ from Core.Config.HPV_Config import AUTO_UPDATE
 
 
 
-def HPV_Upgrade() -> None:
-    '''Автоматическая проверка и установка обновления'''
+PATH = path.dirname(path.dirname(path.dirname(path.abspath(__file__)))) # Путь к главной директории
 
-    print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Проверка наличия обновления... Подождите немного!')
-    PATH = path.dirname(path.dirname(path.dirname(path.abspath(__file__)))) # Путь к главной директории
-    PIP = 'pip' if s_name() == 'Windows' else 'pip3' # Определение ОС, для установки зависимостей
-    HPV_Requirements = path.join(path.dirname(path.abspath(__file__)), 'HPV_Requirements.txt') # Путь к файлу с зависимостями
+
+
+def HPV_Upgrade_Alert() -> bool:
+    '''Проверка наличия обновления'''
 
     try:
         terminal(['git', 'fetch'], cwd=PATH, check=True) # Загрузка последних изменений
         CHECK = terminal(['git', 'status', '-uno'], cwd=PATH, capture_output=True, text=True).stdout # Проверка состояния файлов
+        return True if 'Your branch is behind' in CHECK else False
+    except:
+        return False
 
-        if 'Your branch is behind' in CHECK:
+
+
+def HPV_Upgrade() -> None:
+    '''Автоматическая проверка и установка обновления'''
+
+    print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Проверка наличия обновления... Подождите немного!')
+    PIP = 'pip' if s_name() == 'Windows' else 'pip3' # Определение ОС, для установки зависимостей
+    HPV_Requirements = path.join(path.dirname(path.abspath(__file__)), 'HPV_Requirements.txt') # Путь к файлу с зависимостями
+
+    try:
+        if HPV_Upgrade_Alert():
             print(Fore.MAGENTA + '[HPV]' + Fore.YELLOW + ' — Обнаружено обновление!')
 
             if AUTO_UPDATE:

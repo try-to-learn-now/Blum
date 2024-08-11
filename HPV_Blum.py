@@ -8,10 +8,10 @@ from colorama import Fore
 from typing import Literal
 from datetime import datetime, timedelta
 from urllib.parse import unquote
-from pytz import timezone
 
 from Core.Tools.HPV_Banner import HPV_Banner
 from Core.Tools.HPV_Config_Check import HPV_Config_Check
+from Core.Tools.HPV_Upgrade import HPV_Upgrade_Alert
 from Core.Tools.HPV_Getting_File_Paths import HPV_Get_Config, HPV_Get_Empty_Request, HPV_Get_Accept_Language
 
 from Core.Config.HPV_Config import *
@@ -168,20 +168,6 @@ class HPV_Blum:
             self.HPV_PRO.request(Request['Method'], Request['Url'], Request.get('Params'), Request.get('Data'), Request.get('Headers'), proxies=self.Proxy)
         except:
             pass
-
-
-
-    def Time_Check(self) -> bool:
-        '''Проверка времени'''
-
-        # Получение текущего времени по МСК
-        CURRENT = datetime.now(timezone('Europe/Moscow'))
-
-        # Определение времени начала и конца интервала
-        START = CURRENT.replace(hour=20, minute=0, second=0)
-        END = CURRENT.replace(hour=21, minute=30, second=0)
-
-        return START <= CURRENT <= END
 
 
 
@@ -494,7 +480,8 @@ class HPV_Blum:
                     try:
                         URL = 'https://game-domain.blum.codes/api/v1/user/balance'
                         HEADERS = {'User-Agent': self.USER_AGENT, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': self.SEC_CH_UA, 'sec-ch-ua-mobile': self.SEC_CH_UA_MOBILE, 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': self.SEC_CH_UA_PLATFORM, 'origin': 'https://telegram.blum.codes', 'x-requested-with': self.X_REQUESTED_WITH, 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': self.ACCEPT_LANGUAGE}
-                        Farming = float(self.HPV_PRO.get(URL, headers=HEADERS, proxies=self.Proxy).json()['farming']['balance'])
+                        Request = float(self.HPV_PRO.get(URL, headers=HEADERS, proxies=self.Proxy).json()['farming']['balance'])
+                        Farming = False if Request == 57.6 else True
                     except:
                         Farming = False
 
@@ -512,10 +499,10 @@ class HPV_Blum:
                         self.Logging('Warning', '⏳', f'Сбор уже производился! Следующий сбор: {Waiting_STR}!')
 
                         # Ожидание конца майнинга
-                        for _ in range(_Waiting):
-                            if self.Time_Check(): # Проверка времени, является ли сейчас время от 20:00 до 21:30 по МСК
+                        for _ in range(int(_Waiting / 60)):
+                            if HPV_Upgrade_Alert(): # Проверка наличия обновления
                                 return
-                            sleep(1)
+                            sleep(60)
                         self.ReAuthentication() # Повторная аутентификация аккаунта
                         continue
 
@@ -547,20 +534,20 @@ class HPV_Blum:
 
 
                     # Ожидание от 9 до 11 часов
-                    for _ in range(Waiting):
-                        if self.Time_Check(): # Проверка времени, является ли сейчас время от 20:00 до 21:30 по МСК
+                    for _ in range(int(Waiting / 60)):
+                        if HPV_Upgrade_Alert(): # Проверка наличия обновления
                             return
-                        sleep(1)
+                        sleep(60)
                     self.ReAuthentication() # Повторная аутентификация аккаунта
 
                 else: # Если аутентификация не успешна
-                    if self.Time_Check(): # Проверка времени, является ли сейчас время от 20:00 до 21:30 по МСК
+                    if HPV_Upgrade_Alert(): # Проверка наличия обновления
                         return
                     sleep(randint(33, 66)) # Ожидание от 33 до 66 секунд
                     self.ReAuthentication() # Повторная аутентификация аккаунта
 
             except:
-                if self.Time_Check(): # Проверка времени, является ли сейчас время от 20:00 до 21:30 по МСК
+                if HPV_Upgrade_Alert(): # Проверка наличия обновления
                     return
 
 
