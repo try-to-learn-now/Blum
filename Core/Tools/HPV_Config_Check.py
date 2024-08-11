@@ -8,6 +8,7 @@ from Core.Tools.HPV_Getting_File_Paths import HPV_Get_Config, HPV_Get_Accounts
 from Core.Tools.HPV_Config_Setup import HPV_Config_Setup
 from Core.Tools.HPV_Proxy import HPV_Request, HPV_Proxy_Checker
 from Core.Tools.HPV_Headers import HPV_Headers
+from Core.Tools.HPV_Upgrade import HPV_Upgrade
 
 
 
@@ -51,6 +52,7 @@ def HPV_Config_Check() -> None:
 
     print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Проверка конфига... Подождите немного!')
     HPV_Check_Configs() # Проверка наличия конфигурационных файлов
+    HPV_Upgrade() # Автоматическая проверка и установка обновления
     Config = HPV_Get_Config() # Получение конфигурационных данных
 
     if Config:
