@@ -16,9 +16,12 @@ def HPV_Upgrade_Alert() -> bool:
     '''Проверка наличия обновления'''
 
     try:
-        terminal(['git', 'fetch'], cwd=PATH, check=True) # Загрузка последних изменений
-        CHECK = terminal(['git', 'status', '-uno'], cwd=PATH, capture_output=True, text=True).stdout # Проверка состояния файлов
-        return True if 'Your branch is behind' in CHECK else False
+        if AUTO_UPDATE:
+            terminal(['git', 'fetch'], cwd=PATH, check=True) # Загрузка последних изменений
+            CHECK = terminal(['git', 'status', '-uno'], cwd=PATH, capture_output=True, text=True).stdout # Проверка состояния файлов
+            return True if 'Your branch is behind' in CHECK else False
+        else:
+            return False
     except:
         return False
 
