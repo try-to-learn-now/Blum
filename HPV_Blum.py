@@ -480,10 +480,16 @@ class HPV_Blum:
                     try:
                         URL = 'https://game-domain.blum.codes/api/v1/user/balance'
                         HEADERS = {'User-Agent': self.USER_AGENT, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': self.SEC_CH_UA, 'sec-ch-ua-mobile': self.SEC_CH_UA_MOBILE, 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': self.SEC_CH_UA_PLATFORM, 'origin': 'https://telegram.blum.codes', 'x-requested-with': self.X_REQUESTED_WITH, 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': self.ACCEPT_LANGUAGE}
-                        Request = float(self.HPV_PRO.get(URL, headers=HEADERS, proxies=self.Proxy).json()['farming']['balance'])
-                        Farming = False if Request == 57.6 else True
+                        Request = self.HPV_PRO.get(URL, headers=HEADERS, proxies=self.Proxy).json()['farming']
+                        BALANCE = float(Request['balance']) # Намайненный баланс
+                        SPEED = float(Request['earningsRate']) # Скорость майнинга
+                        if Request == 57.6 or Request == 63.36:
+                            Farming = False
+                        else:
+                            Farming = True
                     except:
                         Farming = False
+
 
                     self.Empty_Request('tribe_my_options') # Пустой запрос
                     self.Empty_Request('user_balance_get') # Пустой запрос
@@ -493,7 +499,7 @@ class HPV_Blum:
 
 
                     if Farming: # Если фарминг ещё продолжается
-                        _Waiting = 28_800 - Farming/0.002 + randint(1*60*60, 3*60*60) # Значение времени в секундах для ожидания
+                        _Waiting = 8*60*60 - BALANCE/SPEED + randint(1*60*60, 3*60*60) # Значение времени в секундах для ожидания
                         Waiting_STR = (datetime.now() + timedelta(seconds=_Waiting)).strftime('%Y-%m-%d %H:%M:%S') # Значение времени в читаемом виде
 
                         self.Logging('Warning', '⏳', f'Сбор уже производился! Следующий сбор: {Waiting_STR}!')
