@@ -126,11 +126,13 @@ def HPV_Config_Check() -> None:
         # Удаление неактуальных аккаунтов
         if ACCOUNTS_TO_REMOVE:
             print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Обнаружены неактуальные аккаунты. Производится их удаление...')
-            NEW_CONFIG = [Account for Account in Config if (Account['Name'], Account['URL']) not in ACCOUNTS_TO_REMOVE]
+            NEW_CONFIG = [Account for Account in Config if (Account['Name'], Account['URL']) not in ACCOUNTS_TO_REMOVE] # Удаление неактуальных аккаунтов
             CHANGES = True
 
         # Добавление новых аккаунтов
         if NEW_ACCOUNTS:
+            if not ACCOUNTS_TO_REMOVE:
+                NEW_CONFIG = [Account for Account in Config] # Добавление текущих актуальных аккаунтов
             print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Обнаружены новые аккаунты. Выполняется их добавление...')
             for Name, URL in NEW_ACCOUNTS:
                 Headers = HPV_New_Headers() # Генерация новых уникальных параметров для Headers
