@@ -483,7 +483,7 @@ class HPV_Blum:
                         Request = self.HPV_PRO.get(URL, headers=HEADERS, proxies=self.Proxy).json()['farming']
                         BALANCE = float(Request['balance']) # Намайненный баланс
                         SPEED = float(Request['earningsRate']) # Скорость майнинга
-                        if Request == 57.6 or Request == 63.36:
+                        if BALANCE == 57.6 or BALANCE == 63.36:
                             Farming = False
                         else:
                             Farming = True
