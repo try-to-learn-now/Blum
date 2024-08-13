@@ -506,10 +506,10 @@ class HPV_Blum:
                         self.Logging('Warning', '⏳', f'Сбор уже производился! Следующий сбор: {Waiting_STR}!')
 
                         # Ожидание конца майнинга
-                        for _ in range(int(_Waiting / 60)):
+                        for _ in range(int(_Waiting / 60*30)):
                             if HPV_Upgrade_Alert(): # Проверка наличия обновления
                                 return
-                            sleep(60)
+                            sleep(60*30)
                         self.ReAuthentication() # Повторная аутентификация аккаунта
                         continue
 
@@ -541,10 +541,10 @@ class HPV_Blum:
 
 
                     # Ожидание от 9 до 11 часов
-                    for _ in range(int(Waiting / 60)):
+                    for _ in range(int(Waiting / 60*30)):
                         if HPV_Upgrade_Alert(): # Проверка наличия обновления
                             return
-                        sleep(60)
+                        sleep(60*30)
                     self.ReAuthentication() # Повторная аутентификация аккаунта
 
                 else: # Если аутентификация не успешна
