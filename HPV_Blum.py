@@ -317,6 +317,7 @@ class HPV_Blum:
 
         try:
             self.Empty_Request('game_play_options') # Пустой запрос
+            self.Logging('Success', '🟢', 'Игра началась, ожидание 30-35 секунд...')
 
             GID = self.HPV_PRO.post(URL_1, headers=HEADERS_1, proxies=self.Proxy).json()['gameId'] # Запуск и получение ID игры
             _COINS = randint(COINS[0], COINS[1]) # Желаемое кол-во получения монет
@@ -330,7 +331,7 @@ class HPV_Blum:
 
             Thread(target=Empty_Requests).start() # Пустые запросы
 
-            sleep(30) # Ожидание 30 секунд, для показа реальности игры
+            sleep(randint(30, 35)) # Ожидание 30-35 секунд, для показа реальности игры
 
             self.Empty_Request('game_webm_get') # Пустой запрос
             self.HPV_PRO.post(URL_2, headers=HEADERS_2, json={'gameId': str(GID), 'points': _COINS}, proxies=self.Proxy)
