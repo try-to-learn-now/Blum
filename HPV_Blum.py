@@ -165,7 +165,7 @@ class HPV_Blum:
             Request['Headers']['accept-language'] = self.ACCEPT_LANGUAGE
 
         try:
-            self.HPV_PRO.request(Request['Method'], Request['Url'], Request.get('Params'), Request.get('Data'), Request.get('Headers'), proxies=self.Proxy)
+            self.HPV_PRO.request(method=Request['Method'], url=Request['Url'], params=Request.get('Params'), data=Request.get('Data'), json=Request.get('Json'), headers=Request.get('Headers'), proxies=self.Proxy)
         except:
             pass
 
