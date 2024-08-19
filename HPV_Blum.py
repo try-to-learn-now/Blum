@@ -570,6 +570,7 @@ class HPV_Blum:
 if __name__ == '__main__':
 
     sys('cls' if s_name() == 'Windows' else 'clear') # Очистка терминала
+    sys('title HPV Blum') # Заголовок
 
     while True:
         HPV_Banner() # Вывод баннера
