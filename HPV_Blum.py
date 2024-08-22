@@ -143,26 +143,23 @@ class HPV_Blum:
 
         Request: dict = HPV_Get_Empty_Request()[Empty]
 
-        if Request['Headers'].get('User-Agent'):
-            Request['Headers']['User-Agent'] = self.USER_AGENT
+        for header_key in list(Request['Headers'].keys()):
+            header_key_lower = header_key.lower()
 
-        if Request['Headers'].get('sec-ch-ua'):
-            Request['Headers']['sec-ch-ua'] = self.SEC_CH_UA
-
-        if Request['Headers'].get('sec-ch-ua-mobile'):
-            Request['Headers']['sec-ch-ua-mobile'] = self.SEC_CH_UA_MOBILE
-
-        if Request['Headers'].get('authorization'):
-            Request['Headers']['authorization'] = f'Bearer {self.Token}'
-
-        if Request['Headers'].get('sec-ch-ua-platform'):
-            Request['Headers']['sec-ch-ua-platform'] = self.SEC_CH_UA_PLATFORM
-
-        if Request['Headers'].get('x-requested-with'):
-            Request['Headers']['x-requested-with'] = self.X_REQUESTED_WITH
-
-        if Request['Headers'].get('accept-language'):
-            Request['Headers']['accept-language'] = self.ACCEPT_LANGUAGE
+            if header_key_lower == 'user-agent':
+                Request['Headers'][header_key] = self.USER_AGENT
+            elif header_key_lower == 'sec-ch-ua':
+                Request['Headers'][header_key] = self.SEC_CH_UA
+            elif header_key_lower == 'sec-ch-ua-mobile':
+                Request['Headers'][header_key] = self.SEC_CH_UA_MOBILE
+            elif header_key_lower == 'authorization':
+                Request['Headers'][header_key] = f'Bearer {self.Token}'
+            elif header_key_lower == 'sec-ch-ua-platform':
+                Request['Headers'][header_key] = self.SEC_CH_UA_PLATFORM
+            elif header_key_lower == 'x-requested-with':
+                Request['Headers'][header_key] = self.X_REQUESTED_WITH
+            elif header_key_lower == 'accept-language':
+                Request['Headers'][header_key] = self.ACCEPT_LANGUAGE
 
         try:
             self.HPV_PRO.request(method=Request['Method'], url=Request['Url'], params=Request.get('Params'), data=Request.get('Data'), json=Request.get('Json'), headers=Request.get('Headers'), proxies=self.Proxy)
@@ -570,7 +567,7 @@ class HPV_Blum:
 if __name__ == '__main__':
 
     sys('cls' if s_name() == 'Windows' else 'clear') # Очистка терминала
-    sys('title HPV Blum - V2.12') # Заголовок
+    sys('title HPV Blum - V2.13') # Заголовок
 
     while True:
         HPV_Banner() # Вывод баннера
