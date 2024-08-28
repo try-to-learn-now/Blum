@@ -500,7 +500,7 @@ class HPV_Blum:
                         _Waiting = 8*60*60 - BALANCE/SPEED + randint(1*60*60, 3*60*60) # Значение времени в секундах для ожидания
                         Waiting_STR = (datetime.now() + timedelta(seconds=_Waiting)).strftime('%Y-%m-%d %H:%M:%S') # Значение времени в читаемом виде
 
-                        self.Logging('Warning', '⏳', f'Сбор уже производился! Следующий сбор: {Waiting_STR}!')
+                        self.Logging('Warning', '⏳', f'The collection has already taken place! The next collection: {Waiting_STR}!')
 
                         # Ожидание конца майнинга
                         _Waiting_For_Upgrade = int(_Waiting / (60*30))
@@ -535,8 +535,8 @@ class HPV_Blum:
                     Waiting_STR = (datetime.now() + timedelta(seconds=Waiting)).strftime('%Y-%m-%d %H:%M:%S') # Значение времени в читаемом виде
 
 
-                    self.Logging('Success', '💰', f'Текущий баланс: {self.Get_Info()["Balance"]}')
-                    self.Logging('Warning', '⏳', f'Следующий сбор: {Waiting_STR}!')
+                    self.Logging('Success', '💰', f'Current balance: {self.Get_Info()["Balance"]}')
+                    self.Logging('Warning', '⏳', f'Next gathering: {Waiting_STR}!')
 
 
                     # Ожидание от 9 до 11 часов
@@ -574,7 +574,7 @@ if __name__ == '__main__':
     while True:
         HPV_Banner() # Вывод баннера
         HPV_Config_Check() # Проверка конфига на валидность
-        print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Проверка конфига окончена... Скрипт запустится через 5 секунд...\n'); sleep(5)
+        print(Fore.MAGENTA + '[HPV]' + Fore.GREEN + ' — Config check completed... The script will run in 5 seconds...\n'); sleep(5)
 
         Console_Lock = Lock()
         Threads = [] # Список потоков
