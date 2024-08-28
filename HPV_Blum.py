@@ -26,21 +26,21 @@ class HPV_Blum:
     '''
     AutoBot Ferma /// HPV
     ---------------------
-    [1] - `Получение ежедневной награды`
+    [1] - `Receiving daily reward`
     
-    [2] - `Сбор монет`
+    [2] - `Coin collection`
     
-    [3] - `Запуск фарма монет`
+    [3] - `Launch of coin farming`
     
-    [4] - `Сбор монет за рефералов`
+    [4] - `Collecting coins for referrals`
     
-    [5] - `Получение кол-ва доступных игр и запуск их прохождения`
+    [5] - `Getting the number of available games and starting their passage`
     
-    [6] - `Выполнение всех доступных заданий`
+    [6] - `Completing all available tasks`
     
-    [7] - `Ожидание от 9 до 11 часов`
+    [7] - `Waiting time from 9 to 11 hours`
     
-    [8] - `Повторение действий через 9-11 часов`
+    [8] - `Repeat actions after 9-11 hours`
     '''
 
 
@@ -64,7 +64,7 @@ class HPV_Blum:
 
 
     def URL_Clean(self, URL: str) -> str:
-        '''Очистка уникальной ссылки от лишних элементов'''
+        '''Cleaning a unique link from unnecessary elements'''
 
         try:
             return unquote(URL.split('#tgWebAppData=')[1].split('&tgWebAppVersion')[0])
@@ -97,7 +97,7 @@ class HPV_Blum:
 
 
     def Get_Accept_Language(self) -> str:
-        '''Получение языкового параметра, подходящего под IP'''
+        '''Getting the language parameter that matches the IP'''
 
         Accept_Language = HPV_Get_Accept_Language() # Получение данных с языковыми заголовками
 
@@ -112,7 +112,7 @@ class HPV_Blum:
 
 
     def Authentication(self) -> str:
-        '''Аутентификация аккаунта'''
+        '''Account authentication'''
 
         URL = 'https://gateway.blum.codes/v1/auth/provider/PROVIDER_TELEGRAM_MINI_APP'
         HEADERS = {'User-Agent': self.USER_AGENT, 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json', 'sec-ch-ua': self.SEC_CH_UA, 'sec-ch-ua-mobile': self.SEC_CH_UA_MOBILE, 'sec-ch-ua-platform': self.SEC_CH_UA_PLATFORM, 'origin': 'https://telegram.blum.codes', 'x-requested-with': self.X_REQUESTED_WITH, 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': self.ACCEPT_LANGUAGE}
@@ -123,23 +123,23 @@ class HPV_Blum:
 
         try:
             Token = self.HPV_PRO.post(URL, headers=HEADERS, json=JSON, proxies=self.Proxy).json()['token']['access']
-            self.Logging('Success', '🟢', 'Инициализация успешна!')
+            self.Logging('Success', '🟢', 'Initialization successful!')
             return Token
         except:
-            self.Logging('Error', '🔴', 'Ошибка инициализации!')
+            self.Logging('Error', '🔴', 'Initialization error!')
             return ''
 
 
 
     def ReAuthentication(self) -> None:
-        '''Повторная аутентификация аккаунта'''
+        '''Re-authenticating your account'''
 
         self.Token = self.Authentication()
 
 
 
     def Empty_Request(self, Empty: str) -> None:
-        '''Отправка пустых запросов с подгрузкой дополнений сайта, чтобы казаться человеком'''
+        '''Sending empty requests with site add-ons loading to appear human'''
 
         Request: dict = HPV_Get_Empty_Request()[Empty]
 
@@ -169,7 +169,7 @@ class HPV_Blum:
 
 
     def Get_Info(self) -> dict:
-        '''Получение информации о балансе и наличии доступных игр'''
+        '''Getting information about the balance and availability of available games'''
 
         URL = 'https://game-domain.blum.codes/api/v1/user/balance'
         HEADERS = {'User-Agent': self.USER_AGENT, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': self.SEC_CH_UA, 'sec-ch-ua-mobile': self.SEC_CH_UA_MOBILE, 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': self.SEC_CH_UA_PLATFORM, 'origin': 'https://telegram.blum.codes', 'x-requested-with': self.X_REQUESTED_WITH, 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': self.ACCEPT_LANGUAGE}
@@ -195,7 +195,7 @@ class HPV_Blum:
 
 
     def Daily_Reward(self) -> bool:
-        '''Получение ежедневной награды'''
+        '''Receiving daily reward'''
 
         URL = 'https://game-domain.blum.codes/api/v1/daily-reward?offset=-300'
         HEADERS = {'User-Agent': self.USER_AGENT, 'Accept': 'application/json, text/plain, */*', 'sec-ch-ua': self.SEC_CH_UA, 'sec-ch-ua-mobile': self.SEC_CH_UA_MOBILE, 'authorization': f'Bearer {self.Token}', 'sec-ch-ua-platform': self.SEC_CH_UA_PLATFORM, 'origin': 'https://telegram.blum.codes', 'x-requested-with': self.X_REQUESTED_WITH, 'sec-fetch-site': 'same-site', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'accept-language': self.ACCEPT_LANGUAGE}
@@ -234,9 +234,9 @@ class HPV_Blum:
 
         try:
             self.HPV_PRO.post(URL, headers=HEADERS, proxies=self.Proxy).json()['availableBalance']
-            self.Logging('Success', '🟢', 'Монеты собраны!')
+            self.Logging('Success', '🟢', 'Coins collected!')
         except:
-            self.Logging('Error', '🔴', 'Монеты не собраны!')
+            self.Logging('Error', '🔴', 'Coins not collected!')
 
 
 
@@ -252,9 +252,9 @@ class HPV_Blum:
 
         try:
             self.HPV_PRO.post(URL, headers=HEADERS, proxies=self.Proxy).json()['startTime']
-            self.Logging('Success', '🟢', 'Фарм монет запущен!')
+            self.Logging('Success', '🟢', 'Coin farming has started!')
         except:
-            self.Logging('Error', '🔴', 'Фарм монет не запущен!')
+            self.Logging('Error', '🔴', 'Coin farming is not running!')
 
 
 
@@ -294,7 +294,7 @@ class HPV_Blum:
                 sleep(randint(1, 3)) # Промежуточное ожидание
 
                 if self.Referal_Claim():
-                    self.Logging('Success', '🟢', 'Монеты за рефералов собраны!')
+                    self.Logging('Success', '🟢', 'Coins for referrals collected!')
 
                     self.Empty_Request('friends_balance_options') # Пустой запрос
                     self.Empty_Request('friends_balance_get') # Пустой запрос
@@ -314,7 +314,7 @@ class HPV_Blum:
 
         try:
             self.Empty_Request('game_play_options') # Пустой запрос
-            self.Logging('Success', '🟢', 'Игра началась, ожидание 30 секунд...')
+            self.Logging('Success', '🟢', 'Game started, waiting 30 seconds...')
 
             GID = self.HPV_PRO.post(URL_1, headers=HEADERS_1, proxies=self.Proxy).json()['gameId'] # Запуск и получение ID игры
             _COINS = randint(COINS[0], COINS[1]) # Желаемое кол-во получения монет
@@ -332,9 +332,9 @@ class HPV_Blum:
 
             self.Empty_Request('game_webm_get') # Пустой запрос
             self.HPV_PRO.post(URL_2, headers=HEADERS_2, json={'gameId': str(GID), 'points': _COINS}, proxies=self.Proxy)
-            self.Logging('Success', '🟢', f'Игра сыграна! +{_COINS}!')
+            self.Logging('Success', '🟢', f'The game is played! +{_COINS}!')
         except:
-            self.Logging('Error', '🔴', 'Игра не сыграна!')
+            self.Logging('Error', '🔴', 'The game is not played!')
 
 
 
@@ -344,7 +344,7 @@ class HPV_Blum:
         try:
             Get_plays = self.Get_Info()['Plays'] 
             if Get_plays > 0:
-                self.Logging('Success', '🎮', f'Игр доступно: {Get_plays}!')
+                self.Logging('Success', '🎮', f'Games available: {Get_plays}!')
                 for _ in range(Get_plays):
                     self.Play()
                     self.Empty_Request('friends_balance_options') # Пустой запрос
@@ -355,7 +355,7 @@ class HPV_Blum:
                     self.Empty_Request('friends_balance_get') # Пустой запрос
                     sleep(randint(4, 6))
 
-                self.Logging('Success', '💰', f'Баланс после игр: {self.Get_Info()["Balance"]}')
+                self.Logging('Success', '💰', f'Balance after games: {self.Get_Info()["Balance"]}')
         except:pass
 
 
@@ -417,7 +417,7 @@ class HPV_Blum:
 
 
     def AutoTasks(self) -> None:
-        '''Автоматическое выполнение всех доступных заданий'''
+        '''Automatic execution of all available tasks'''
 
         try:
             Tasks = self.Get_Tasks() # Список заданий
@@ -433,13 +433,13 @@ class HPV_Blum:
                             sleep(randint(2, 4)) # Промежуточное ожидание
                             Claim_Tasks = self.Claim_Tasks(_Task['id'])
                             if Claim_Tasks['Status']:
-                                self.Logging('Success', '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
+                                self.Logging('Success', '⚡️', f'The task is completed! +{Claim_Tasks["Reward"]}')
                                 sleep(randint(3, 5)) # Промежуточное ожидание
 
                     elif _Task['status'] == 'READY_FOR_CLAIM': # Если задание уже начато
                         Claim_Tasks = self.Claim_Tasks(_Task['id'])
                         if Claim_Tasks['Status']:
-                            self.Logging('Success', '⚡️', f'Задание выполнено! +{Claim_Tasks["Reward"]}')
+                            self.Logging('Success', '⚡️', f'The task is completed! +{Claim_Tasks["Reward"]}')
                             sleep(randint(3, 5)) # Промежуточное ожидание
         except:pass
 
@@ -464,11 +464,11 @@ class HPV_Blum:
         while True:
             try:
                 if self.Token: # Если аутентификация успешна
-                    self.Logging('Success', '💰', f'Текущий баланс: {self.Get_Info()["Balance"]}')
+                    self.Logging('Success', '💰', f'Current balance: {self.Get_Info()["Balance"]}')
 
 
                     if self.Daily_Reward(): # Получение ежедневной награды
-                        self.Logging('Success', '🟢', 'Ежедневная награда получена!')
+                        self.Logging('Success', '🟢', 'Daily reward received!')
                         sleep(randint(3, 5)) # Промежуточное ожидание
 
 
