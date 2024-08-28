@@ -5,16 +5,12 @@ from time import sleep
 
 
 HPV_TEAM = f'''
- _  _ _____   __   ___ _            
-| || | _ \ \ / /__| _ ) |_  _ _ __  
-| __ |  _/\ V /___| _ \ | || | \'  \ 
-|_||_|_|   \_/    |___/_|\_,_|_|_|_|
 +-----------------------------------------+
-| Контент: t.me/HPV_TEAM /// t.me/HPV_PRO |
+| Blum Automation Fucking  |
 +-----------------------------------------+
-| Сотрудничество: t.me/HPV_BASE |
+| Fuck The system |
 +-------------------------------+
-| Автор: t.me/A_KTO_Tbl |
+| chal bhag |
 +-----------------------+
 | V2.14 |
 +-------+
@@ -23,7 +19,7 @@ HPV_TEAM = f'''
 
 
 def HPV_Banner():
-    '''Вывод баннера'''
+    '''Displaying a banner'''
 
     for HPV in HPV_TEAM.split('\n'): # Вывод баннера
         print(Fore.MAGENTA + HPV.center(gts()[0], ' '))
